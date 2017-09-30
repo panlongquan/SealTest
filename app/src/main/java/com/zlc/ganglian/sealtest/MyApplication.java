@@ -11,8 +11,6 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
-import io.rong.push.RongPushClient;
-import io.rong.push.common.RongException;
 
 /**
 * Description: 
@@ -28,21 +26,30 @@ public class MyApplication extends Application implements RongIM.OnSendMessageLi
         if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext()))) {
             //1.推送集成, 在init之前
             initPush();
-
+            /**
+             * 注意：
+             *
+             * IMKit SDK调用第一步 初始化
+             *
+             * context上下文
+             *
+             * 只有两个进程需要初始化，主进程和 push 进程
+             */
+            RongIM.setServerInfo("nav.cn.ronghub.com", "up.qbox.me");
             RongIM.init(this);
-
+            //设置
             setListener();
         }
     }
 
     private void initPush() {
-        RongPushClient.registerHWPush(this);
-        RongPushClient.registerMiPush(this, "2882303761517473625", "5451747338625");
-        try {
-            RongPushClient.registerGCM(this);
-        } catch (RongException e) {
-            e.printStackTrace();
-        }
+//        RongPushClient.registerHWPush(this);//华为推送
+//        RongPushClient.registerMiPush(this, "2882303761517473625", "5451747338625");//小米推送
+//        try {
+//            RongPushClient.registerGCM(this);//Google推送
+//        } catch (RongException e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**
