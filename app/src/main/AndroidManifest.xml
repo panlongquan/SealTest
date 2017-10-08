@@ -2,27 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zlc.ganglian.sealtest">
 
-    <meta-data
-        android:name="com.amap.api.v2.apikey"
-        android:value="f43142ddf890c8a930fe722b90ef9ca4" />
-
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyTheme">
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <!-- 三方sdk配置区，开始 -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="f43142ddf890c8a930fe722b90ef9ca4" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -45,56 +37,83 @@
             </intent-filter>
         </receiver>
 
+        <!--会话列表-->
+        <activity
+            android:name=".activity.ConversationListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
 
-        <!--第三方相关,向第三方推送服务请求 token 的服务 推送配置开始-->
-        <service
-            android:name="io.rong.push.core.PushRegistrationService"
-            android:exported="false">
-        </service>
-
-
-        <!-- 处理 push 消息相关的服务 -->
-        <service
-            android:name="io.rong.push.core.MessageHandleService"
-            android:exported="true">
-        </service>
-
-
-        <!-- push服务 -->
-        <service
-            android:name="io.rong.push.PushService"
-            android:exported="false"
-            android:process="io.rong.push">  <!-- push进程，可以改名 -->
-        </service>
-
-
-        <!-- push 相关事件接收器 -->
-        <receiver
-            android:name="io.rong.push.PushReceiver"
-            android:process="io.rong.push">
-            <!-- 此处进程可以改名，名称需要和PushService所在进程统一 -->
-
-            <!-- 心跳事件 -->
             <intent-filter>
-                <action android:name="io.rong.push.intent.action.HEART_BEAT" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="com.zlc.ganglian.sealtest"
+                    android:path="/conversationlist"
+                    android:scheme="rong" />
             </intent-filter>
-            <!-- 网络变动事件 -->
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <!-- 部分用户事件 -->
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-            </intent-filter>
-        </receiver>
-        <!--第三方相关,向第三方推送服务请求 token 的服务 推送配置结束-->
+        </activity>
 
-        <activity android:name=".login.LoginActivity"></activity>
+        <!--聚合会话列表-->
+        <activity
+            android:name=".activity.SubConversationListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="com.zlc.ganglian.sealtest"
+                    android:path="/subconversationlist"
+                    android:scheme="rong" />
+            </intent-filter>
+        </activity>
+
+        <!--会话界面-->
+        <activity
+            android:name=".activity.ConversationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="com.zlc.ganglian.sealtest"
+                    android:pathPrefix="/conversation/"
+                    android:scheme="rong" />
+            </intent-filter>
+        </activity>
+
+        <!-- 三方sdk配置区，结束 -->
+
+        <!-- App组件配置区，开始 -->
+        <activity
+            android:name=".splash.SplashActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".login.LoginActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+
     </application>
 
 </manifest>

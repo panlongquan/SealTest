@@ -5,6 +5,9 @@ import android.app.Application;
 import android.content.Context;
 import android.view.View;
 
+import com.zlc.ganglian.sealtest.constant.Constant;
+import com.zlc.ganglian.sealtest.tools.StrTool;
+
 import io.rong.imkit.RongIM;
 import io.rong.imkit.model.UIConversation;
 import io.rong.imlib.RongIMClient;
@@ -23,6 +26,12 @@ public class MyApplication extends Application implements RongIM.OnSendMessageLi
     @Override
     public void onCreate() {
         super.onCreate();
+        /**
+         * 运行后您的 App 后您会发现以下三个进程：
+         *      1、您的应用进程；2、您的应用进程: ipc，这是融云的通信进程；3、io.rong.push，这是融云的推送进程
+         *
+         *   您可以在任意进程使用 RongIM，我们推荐初次集成的用户在主进程使用
+         */
         if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext()))) {
             //1.推送集成, 在init之前
             initPush();
@@ -186,8 +195,16 @@ public class MyApplication extends Application implements RongIM.OnSendMessageLi
      * 用户信息提供者, WEIBO融云服务器提供最新userinfo
      */
     @Override
-    public UserInfo getUserInfo(String s) {
-        // TODO 从本地获取最新userinfo, loginActivity中保存了, 或者修改用户名等操作修改了userinfo的值
+    public UserInfo getUserInfo(String uid) {
+        if (!StrTool.isEmpty(getSharedPreferences("config", Context.MODE_PRIVATE).getString(Constant.SP_CURR_UID, "")) &&
+                !StrTool.isEmpty(getSharedPreferences("config", Context.MODE_PRIVATE).getString(Constant.SP_CURR_NAME, ""))) {
+            // TODO 从本地获取最新userinfo, loginActivity中保存了, 或者修改用户名等操作修改了userinfo的值
+            return new UserInfo(
+                    getSharedPreferences("config", Context.MODE_PRIVATE).getString(Constant.SP_CURR_UID, ""),
+                    getSharedPreferences("config", Context.MODE_PRIVATE).getString(Constant.SP_CURR_NAME, ""),
+                    null
+            );
+        }
         return null;
     }
 

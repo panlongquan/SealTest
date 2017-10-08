@@ -37,7 +37,7 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.message.ContactNotificationMessage;
 
-public class MainActivity extends AppCompatActivity implements DragPointView.OnDragListencer, ViewPager.OnPageChangeListener, View.OnClickListener, IUnReadMessageObserver {
+public class MainActivity extends BaseActivity implements DragPointView.OnDragListencer, ViewPager.OnPageChangeListener, View.OnClickListener, IUnReadMessageObserver {
 
     private Context mContext;
     private TextView mTextChats, mTextContact, mTextFind, mTextMe;
@@ -66,18 +66,18 @@ public class MainActivity extends AppCompatActivity implements DragPointView.OnD
     }
 
     private void initViews() {
-        RelativeLayout chatRLayout = (RelativeLayout) findViewById(R.id.seal_chat);
-        RelativeLayout contactRLayout = (RelativeLayout) findViewById(R.id.seal_contact_list);
-        RelativeLayout foundRLayout = (RelativeLayout) findViewById(R.id.seal_find);
-        RelativeLayout mineRLayout = (RelativeLayout) findViewById(R.id.seal_me);
+        RelativeLayout chatRLayout = findViewById(R.id.seal_chat);
+        RelativeLayout contactRLayout = findViewById(R.id.seal_contact_list);
+        RelativeLayout foundRLayout = findViewById(R.id.seal_find);
+        RelativeLayout mineRLayout = findViewById(R.id.seal_me);
 
-        mTextChats = (TextView) findViewById(R.id.tab_text_chats);
-        mTextContact = (TextView) findViewById(R.id.tab_text_contact);
-        mTextFind = (TextView) findViewById(R.id.tab_text_find);
-        mTextMe = (TextView) findViewById(R.id.tab_text_me);
-        mMineRed = (ImageView) findViewById(R.id.mine_red);
-        moreImage = (ImageView) findViewById(R.id.seal_more);
-        mSearchImageView = (ImageView) findViewById(R.id.ac_iv_search);
+        mTextChats = findViewById(R.id.tab_text_chats);
+        mTextContact = findViewById(R.id.tab_text_contact);
+        mTextFind = findViewById(R.id.tab_text_find);
+        mTextMe = findViewById(R.id.tab_text_me);
+        mMineRed = findViewById(R.id.mine_red);
+        moreImage = findViewById(R.id.seal_more);
+        mSearchImageView = findViewById(R.id.ac_iv_search);
 
         chatRLayout.setOnClickListener(this);
         contactRLayout.setOnClickListener(this);
@@ -119,9 +119,9 @@ public class MainActivity extends AppCompatActivity implements DragPointView.OnD
 
     private void initMainViewPager() {
         Fragment conversationList = initConversationList();
-        mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
+        mViewPager = findViewById(R.id.main_viewpager);
 
-        mUnreadNumView = (DragPointView) findViewById(R.id.seal_num);
+        mUnreadNumView = findViewById(R.id.seal_num);
         mUnreadNumView.setOnClickListener(this);
         mUnreadNumView.setDragListencer(this);
 
@@ -192,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements DragPointView.OnD
 
             final String conversationType = getIntent().getStringExtra("PUSH_CONVERSATIONTYPE");
             final String targetId = getIntent().getStringExtra("PUSH_TARGETID");
-
 
             RongIM.getInstance().getConversation(Conversation.ConversationType.valueOf(conversationType), targetId, new RongIMClient.ResultCallback<Conversation>() {
                 @Override
